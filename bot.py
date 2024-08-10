@@ -96,14 +96,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         response = response_dict.get(user_message, 'Unknown item')
 
-        await query.answer(text="답변 처리중...", show_alert=False)
-        chat_id = update.effective_chat.id
-        job_queue = context.application.job_queue
-        job_queue.run_once(
-            lambda job: asyncio.create_task(resend_menu(context.application.bot, chat_id)),
-            2
-        )
+        # Update the message with the response
         await query.edit_message_text(text=response)
+
+        # Schedule resend_menu to be sent after 2 seconds
+        await asyncio.sleep(2)
+        await resend_menu(context.application.bot, update.effective_chat.id)
+
     except Exception as e:
         logger.error(f"An error occurred: {e}")
         await query.edit_message_text(text="오류가 발생했습니다. 다시 시도해주세요.")
