@@ -119,12 +119,6 @@ async def resend_menu(bot, chat_id: int) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     await bot.send_message(chat_id=chat_id, text='🔵아래 메뉴를 선택해주세요🔵', reply_markup=reply_markup)
 
-async def main() -> None:
-    application = Application.builder().token(API_TOKEN).build()
-    application.add_handler(CommandHandler('start', start))
-    application.add_handler(CallbackQueryHandler(button))
-    await application.run_polling()
-
-# Run the main function
+# Entry point for the bot
 if __name__ == '__main__':
     asyncio.run(main())
