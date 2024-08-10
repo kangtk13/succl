@@ -96,13 +96,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         response = response_dict.get(user_message, 'Unknown item')
 
-        # Update the message with the response
+        # Scheduling the resend_menu function
+        chat_id = update.effective_chat.id
+        context.application.job_queue.run_once(
+            lambda job: asyncio.create_task(resend_menu(context.application.bot, chat_id)),
+            2
+        )
         await query.edit_message_text(text=response)
-
-        # Schedule resend_menu to be sent after 2 seconds
-        await asyncio.sleep(2)
-        await resend_menu(context.application.bot, update.effective_chat.id)
-
     except Exception as e:
         logger.error(f"An error occurred: {e}")
         await query.edit_message_text(text="오류가 발생했습니다. 다시 시도해주세요.")
@@ -119,6 +119,12 @@ async def resend_menu(bot, chat_id: int) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     await bot.send_message(chat_id=chat_id, text='🔵아래 메뉴를 선택해주세요🔵', reply_markup=reply_markup)
 
-# Entry point for the bot
+async def main() -> None:
+    application = Application.builder().token(API_TOKEN).build()
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CallbackQueryHandler(button))
+    await application.run_polling()
+
+# Run the main function
 if __name__ == '__main__':
     asyncio.run(main())
