@@ -1,0 +1,40 @@
+# Ignore system files
+.cache/
+.conda/
+.gitconfig
+.ipynb_checkpoints/
+.ipython/
+.jupyter/
+.vscode/
+AppData/
+Contacts/
+Desktop/
+Documents/
+Downloads/
+Favorites/
+Links/
+Music/
+OneDrive/
+Pictures/
+Saved Games/
+Searches/
+Videos/
+anaconda3/
+ntuser.*
+NTUSER.*
+_netrc
+
+# Ignore Python files
+*.pyc
+__pycache__/
+
+# Ignore Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE and Editor specific files
+*.vscode/
+*.idea/
+
+# Other
+3D Objects/
+Intel/
